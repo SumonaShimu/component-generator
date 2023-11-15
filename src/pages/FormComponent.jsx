@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
-import DynamicTable from "./DynamicTable";
-import JsonFileSaver from "./JsonFileSaver";
-import { gptApiCall } from "./services/gpt-services";
-
+import DynamicTable from "../components/DynamicTable";
+import { gptApiCall } from "../services/gpt-services";
 const FormComponent = () => {
   const [tableData, setTableData] = useState([]);
   const [rowCount, setRowCount] = useState(0);
@@ -73,13 +71,6 @@ const FormComponent = () => {
         }
         const data = response.data.message.message;
         console.log("response : ", data);
-        // fs.writeFile(jsxFileName, data, (err) => {
-        //   if (err) {
-        //     console.error(`Error saving file ${jsxFileName}: ${err.message}`);
-        //   } else {
-        //     console.log(`File ${jsxFileName} saved successfully.`);
-        //   }
-        // });
         const blob = new Blob([data], { type: "application/json" });
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
@@ -94,7 +85,12 @@ const FormComponent = () => {
 
   return (
     <div className="container p-4 mx-auto my-10 bg-gray-300 rounded-md shadow-md md:max-w-[70%]">
-      
+      {/* <button
+        onClick={handleshowList}
+        className="absolute px-4 py-2 bg-pink-400 rounded-md hover:bg-purple-600 left-5"
+      >
+        Show list
+      </button> */}
       <h1 className="mb-4 text-2xl font-bold">Jsx Component Details</h1>
       {/* Language Dropdown */}
       <div className="mb-4">

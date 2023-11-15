@@ -15,6 +15,10 @@ export const router = createBrowserRouter([
         path: "/application",
         element: <ApplicationWriter />,
       },
+      {
+        path: "/",
+        element: <></>,
+      },
       
     ],
   },

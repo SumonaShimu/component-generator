@@ -2,14 +2,13 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
-import FormComponent from "./FormComponent";
+import FormComponent from "./pages/FormComponent";
+import FileViewer from "./pages/FileViewer";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <button className="absolute px-4 py-2 bg-pink-400 rounded-md hover:bg-purple-600 left-5">
-      Show list
-    </button>
+    <FileViewer/>
     <FormComponent />
   </React.StrictMode>
 );
