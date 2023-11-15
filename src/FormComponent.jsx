@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import DynamicTable from "./DynamicTable";
 import JsonFileSaver from "./JsonFileSaver";
+import { gptApiCall } from "./services/gpt-services";
 
 const FormComponent = () => {
   const [tableData, setTableData] = useState([]);
@@ -8,12 +9,19 @@ const FormComponent = () => {
   const [formData, setFormData] = useState({
     language: "ReactJS",
     topic: "",
-    folderName: "",
+    command: `make a complete react component {topic}.jsx`,
+    note: `i want final result in div tag with className "form-responseBox-common-styles". use tailwind css for styles . i don't need any supporting text. add the top most div element will be starting with  | and end with |
+    here is an example:  
+   |<div> 
+   <h1> New summer friendly clothes for you</h1>
+    <div> <h3>25% discount <h3>
+    <p> top notch meterials </p>
+    </div>
+   </div>|`,
     rowCount: rowCount,
     tableData: { tableData },
     description: "",
     example: "",
-    systemContent: "",
   });
 
   useEffect(() => {
@@ -43,10 +51,51 @@ const FormComponent = () => {
     a.click();
   };
 
+  const handleGenerate = () => {
+    const url = "method/whatagptapi.whatagpt.get";
+    const jsonData = JSON.stringify(formData);
+    const jsxFileName = `${formData.topic}.jsx`;
+    const temp = {
+      user_content: jsonData,
+      client_id: "X1KInbxiNaguMLcimaP36vVH06D3",
+      version: "2.0",
+      chat_topic: "0",
+      systemContent: "",
+    };
+    console.log(temp);
+    gptApiCall(url, temp)
+      .then((response) => {
+        const res = response.data.message;
+        console.log(res);
+        if (res?.error_code === 1001 || res?.error_code === 1006) {
+          console.log(res.error_message);
+          return;
+        }
+        const data = response.data.message.message;
+        console.log("response : ", data);
+        // fs.writeFile(jsxFileName, data, (err) => {
+        //   if (err) {
+        //     console.error(`Error saving file ${jsxFileName}: ${err.message}`);
+        //   } else {
+        //     console.log(`File ${jsxFileName} saved successfully.`);
+        //   }
+        // });
+        const blob = new Blob([data], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = jsxFileName;
+        a.click();
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  };
+
   return (
     <div className="container p-4 mx-auto my-10 bg-gray-300 rounded-md shadow-md md:max-w-[70%]">
+      
       <h1 className="mb-4 text-2xl font-bold">Jsx Component Details</h1>
-
       {/* Language Dropdown */}
       <div className="mb-4">
         <label className="block mb-2 text-sm font-bold" htmlFor="language">
@@ -132,7 +181,10 @@ const FormComponent = () => {
         >
           Save
         </button>
-        <button className="px-4 py-2 font-bold text-white bg-red-500 rounded hover:bg-red-700">
+        <button
+          onClick={handleGenerate}
+          className="px-4 py-2 font-bold text-white bg-red-500 rounded hover:bg-red-700"
+        >
           Save and Generate JSX
         </button>
       </div>

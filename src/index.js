@@ -1,13 +1,16 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import reportWebVitals from './reportWebVitals';
-import FormComponent from './FormComponent';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import reportWebVitals from "./reportWebVitals";
+import FormComponent from "./FormComponent";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <FormComponent/>
+    <button className="absolute px-4 py-2 bg-pink-400 rounded-md hover:bg-purple-600 left-5">
+      Show list
+    </button>
+    <FormComponent />
   </React.StrictMode>
 );
 
